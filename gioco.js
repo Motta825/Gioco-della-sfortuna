@@ -9,6 +9,12 @@ import {StyleSheet,
 import React, { useState } from 'react';
 /*@param {Array} carte - Array di oggetti che rappresentano le carte del gioco,
  i dati delle carte sono stati presi dall'intelligenza artificiale (gemini).
+ In questo array ci sono 50 oggetti
+    Ogni oggetto contiene:
+    - id: identificatore unico della carta
+    - title: titolo della carta
+    - score: punteggio di sfortuna associato
+    - img: URL dell'immagine della carta
  */
 export const carte = [
   { id: 1, title: "Ti si rompe la mina della matita durante l'esame scritto", score: 3.5, img: 'https://picsum.photos/200/300?random=1' },
@@ -65,6 +71,5 @@ export const carte = [
 export default function App(){
 return
 }
-
 
 style = StyleSheet.create({});
