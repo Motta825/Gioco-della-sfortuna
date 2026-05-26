@@ -1,0 +1,16 @@
+{
+  "name": "directory",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+   "doc": "jsdoc -c nome.json"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "jsdoc": "^4.0.5"
+  }
+}
