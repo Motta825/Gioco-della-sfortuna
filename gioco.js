@@ -112,19 +112,19 @@ export default function App() {
    */
   const [statoGioco, setStatoGioco] = useState("inizio");
 
-  /** 
+  /*
   *Timer del gioco, 30 secondi a disposizione dell'utente
   *@type {[number,Funcion]}
   */
   const [timer,setTimer]= useState(30);
-  /**
+  /*
   *Per la visualizzazione del messaggio di gioco
   *@type {[String,Function]}
   */
   const [messaggioRound,setMessaggioRound]= useState('');
-  /** 
-  * Verifica se l'utente ha vinto o meno
-  * @type {[Boolean,Function]}
+  /*
+  *Verifica se l'utente ha vinto o meno
+  *@type {[Boolean,Function]}
   */
   const [vittoriaRound,setVittoriaRound]= useState(false);
 
@@ -138,7 +138,7 @@ export default function App() {
      * permette di estrarre 3 carte casualmente e di metterle in ordine crescente grazie
      * all'operatore sort che paragona i primi due punteggi estratti e verifica ik maggiore
      * ed il minore 
-     * @type {Function}
+     * @type{Function}
      */
     const giocatoreIniziale = mescola.slice(0, 3).sort((a, b) => a.score - b.score);
     const restante = mescola.slice(3);
@@ -151,12 +151,9 @@ export default function App() {
      * @type {Function}
      */
     setupRound(restante, giocatoreIniziale, 0);
-  }
-  /**
-   * sancisce la vittoria la scofitta o se la partita è terminata attraverso il controllo
-   * del numero di carte in mano, degli errori commessi e delle carte rimaste nel mazzo
-   * @type {function}}
-   */
+
+
+
 const setupRound = (mazzoCorrente, manoCorrente, erroriCorrenti) => {
     if (manoCorrente.length >= 6) {
       setRoundMessage('👑 Vittoria! Hai collezionato 6 sfortune posizionate alla perfezione!');
@@ -173,12 +170,61 @@ const setupRound = (mazzoCorrente, manoCorrente, erroriCorrenti) => {
       setStatoGioco('GAME_OVER');
       return;
     }
-  }
 
+  }
+if (statoGioco === 'START') {
+    return (
+      <SafeAreaView style={styles.containerCenter}>
+        <Text style={styles.titolo}>Gioco della Sfortuna 😰</Text>
+        <Text style={styles.text}>Edizione: Vita Universitaria</Text>
+        <Text style={styles.descrizione}>
+          Metti in ordine cronologico di "disastro" le sfortune che ti capitano. Raggiungi 6 carte senza fare 3 errori per vincere!
+        </Text>
+        <TouchableOpacity style={styles.bottone} onPress={statoGioco}>
+          <Text style={styles.testobottone}>Inizia Partita</Text>
+        </TouchableOpacity>
+      </SafeAreaView>
+    );
+  }
   return <View />;
 }
-
 /**
  * Stili dell'app
  */
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+titolo: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    color: '#212121',
+    textAlign: 'center',
+    marginBottom: 5,
+  },
+text: {
+    fontSize: 18,
+    color: '#ff5722',
+    fontWeight: '600',
+    marginBottom: 20,
+  },
+descrizione: {
+    fontSize: 15,
+    color: '#616161',
+    textAlign: 'center',
+    lineHeight: 22,
+    marginHorizontal: 15,
+    marginBottom: 40,
+  },
+ bottone: {
+    backgroundColor: '#ff5722',
+    paddingVertical: 15,
+    paddingHorizontal: 40,
+    borderRadius: 30,
+    elevation: 3,
+  },
+  testobottone: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+
+  
+})}
