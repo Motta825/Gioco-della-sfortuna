@@ -151,7 +151,7 @@ export default function App() {
      * @type {Function}
      */
     setupRound(restante, giocatoreIniziale, 0);
-
+  }
 
 
 const setupRound = (mazzoCorrente, manoCorrente, erroriCorrenti) => {
@@ -170,7 +170,11 @@ const setupRound = (mazzoCorrente, manoCorrente, erroriCorrenti) => {
       setStatoGioco('GAME_OVER');
       return;
     }
-
+   const successiva = mazzoCorrente[0];
+    setCartaCorrente(successiva);
+    setDeck(currentDeck.slice(1));
+    setTimer(30);
+    setStatoGioco('PLAYING');
   }
 if (statoGioco === 'START') {
     return (
@@ -186,18 +190,52 @@ if (statoGioco === 'START') {
       </SafeAreaView>
     );
   }
-  return <View />;
-}
-/**
- * Stili dell'app
- */
+  return (
+    <SafeAreaView style={styles.container}>
+     
+      <View style={styles.barra}>
+        <Text style={styles.statoText}>🃏 Carte: {carteGiocatore.length}/6</Text>
+        <Text style={[styles.statoText, timer <= 10 && { color: '#ff1744' }]}>⏱️ {timer}s</Text>
+        <Text style={styles.statoText}>⚠️ Errori: {errore}/3</Text>
+      </View>
+
+      <ScrollView style={styles.scrollArea} >
+      {statoGioco === 'ROUND_OVER' || statoGioco === 'GAME_OVER' ? (
+          <View style={styles.container2}>
+            <Text style={styles.titolo2}>{messaggioRound}</Text>
+            
+            {cartaCorrente && (
+              <View style={[styles.cardContainer, { borderColor: roundWon ? '#4caf50' : '#f44336',borderWidth: 2 }]}>
+                <Image source={{ uri: cartaCorrente.img }} style={styles.cardImage} />
+                <Text style={styles.cardTitle}>{cartaCorrente.title}</Text>
+                <Text style={styles.cardScore}>Indice Sfortuna: {cartaCorrente.score}</Text>
+              </View>
+            )}
+{statoGioco === 'ROUND_OVER' ? (
+              <TouchableOpacity style={styles.bottone} onPress={handleConfirmNextRound}>
+                <Text style={styles.actionButtonText}>Avvia Prossimo Round</Text>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity style={[styles.actionButton, { backgroundColor: '#2196f3' }]} onPress={inizio}>
+                <Text style={styles.actionButtonText}>Gioca Nuova Partita</Text>
+              </TouchableOpacity>
+            )}
+
+
+  );
+
+      }
 const styles = StyleSheet.create({
-titolo: {
+titolo:{
     fontSize: 32,
     fontWeight: 'bold',
     color: '#212121',
     textAlign: 'center',
     marginBottom: 5,
+  },
+  scrollArea: {
+    padding: 16,
+    alignItems: 'center',
   },
 text: {
     fontSize: 18,
@@ -225,6 +263,65 @@ descrizione: {
     fontSize: 18,
     fontWeight: 'bold',
   },
-
+container2: {
+    width: '100%',
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  titolo2: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: '#212529',
+    marginBottom: 25,
+    paddingHorizontal: 10,
+  },
+  cardContainer: {
+    width: width * 0.85,
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    padding: 14,
+    alignItems: 'center',
+    marginBottom: 15,
+    elevation: 4,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+  }
+  ,cardImage: {
+    width: '100%',
+    height: 160,
+    borderRadius: 12,
+    backgroundColor: '#e9ecef',
+    marginBottom: 12,
+  },
+  cardTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#212529',
+    textAlign: 'center',
+    marginBottom: 10,
+    paddingHorizontal: 5,
+  },
+  cardScore: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#ff5722',
+    marginTop: 5,
+  },
+  actionButton: {
+    backgroundColor: '#4caf50',
+    paddingVertical: 14,
+    paddingHorizontal: 35,
+    borderRadius: 25,
+    marginTop: 25,
+    elevation: 2,
+  },
+  actionButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  }
   
-})}
+})
