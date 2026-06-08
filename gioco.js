@@ -173,7 +173,6 @@ const setupRound = (mazzoCorrente, manoCorrente, erroriCorrenti) => {
       setStatoGioco('GAME_OVER');
       return;
     }
-
   }
 
   return <View />;
