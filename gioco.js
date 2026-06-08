@@ -152,6 +152,29 @@ export default function App() {
      */
     setupRound(restante, giocatoreIniziale, 0);
   }
+  /**
+   * sancisce la vittoria la scofitta o se la partita è terminata attraverso il controllo
+   * del numero di carte in mano, degli errori commessi e delle carte rimaste nel mazzo
+   * @type {function}}
+   */
+const setupRound = (mazzoCorrente, manoCorrente, erroriCorrenti) => {
+    if (manoCorrente.length >= 6) {
+      setRoundMessage('👑 Vittoria! Hai collezionato 6 sfortune posizionate alla perfezione!');
+      setStatoGioco('GAME_OVER');
+      return;
+    }
+    if (erroriCorrenti >= 3) {
+      setMessaggioRound('💥 Game Over! Hai commesso 3 errori di valutazione.');
+      setStatoGioco('GAME_OVER');
+      return;
+    }
+    if (mazzoCorrente.length === 0) {
+      setMessaggioRound('Mazzo Esaurito! Partita terminata.');
+      setStatoGioco('GAME_OVER');
+      return;
+    }
+
+  }
 
   return <View />;
 }
