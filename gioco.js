@@ -12,15 +12,11 @@ import {
   TouchableOpacity,
   ScrollView,
   SafeAreaView,
-  Dimensions,
+  Dimensions, // Importato per correggere il riferimento a 'width' negli stili
 } from "react-native";
 
-import React, { useState } from "react";
+import React,{ useState } from "react";
 
-/**
- * Larghezza dello schermo del dispositivo per il calcolo del layout responsivo delle carte.
- * @type {number}
- */
 const { width } = Dimensions.get("window");
 
 /**
@@ -74,7 +70,7 @@ export const carte = [
   { id: 36, title: "Ti scappa da andare in bagno durante un esame di 4 ore blindato", score: 87.0, img: "https://picsum.photos/200/300?random=36" },
   { id: 37, title: "Trovano un errore strutturale nella tua tesi già stampata e rilegata", score: 89.5, img: "https://picsum.photos/200/300?random=37" },
   { id: 38, title: "Ti ammali di influenza la notte prima del concorsone", score: 91.0, img: "https://picsum.photos/200/300?random=38" },
-  { id: 39, title: "Vieni accusato ingiustamente di avvertito copiato all'orale", score: 93.5, img: "https://picsum.photos/200/300?random=39" },
+  { id: 39, title: "Vieni accusato ingiustamente di aver copiato all'orale", score: 93.5, img: "https://picsum.photos/200/300?random=39" },
   { id: 40, title: "Sbagli a compilare la domanda di laurea e salti la sessione", score: 95.0, img: "https://picsum.photos/200/300?random=40" },
   { id: 41, title: "Bocciato all'ultimo esame prima della laurea, salta la festa", score: 96.5, img: "https://picsum.photos/200/300?random=41" },
   { id: 42, title: "Ti revocano una borsa di studio per un ritardo burocratico", score: 97.0, img: "https://picsum.photos/200/300?random=42" },
@@ -89,10 +85,8 @@ export const carte = [
 ];
 
 /**
- * Componente principale dell'applicazione "Gioco della Sfortuna".
- * Gestisce l'interfaccia utente, il ciclo di vita del mazzo e i punteggi dei round.
- * * @component
- * @returns {React.JSX.Element} Il layout renderizzato del gioco.
+ * Componente principale dell'applicazione.
+ * @returns {React.JSX.Element} Vista dell'interfaccia di gioco.
  */
 export default function App() {
   /**
@@ -129,32 +123,29 @@ export default function App() {
   *Timer del gioco, 30 secondi a disposizione dell'utente
   *@type {[number,Funcion]}
   */
-  const [timer, setTimer] = useState(30);
+  const [timer,setTimer]= useState(30);
   
   /*
   *Per la visualizzazione del messaggio di gioco
   *@type {[String,Function]}
   */
-  const [messaggioRound, setMessaggioRound] = useState('');
+  const [messaggioRound,setMessaggioRound]= useState('');
   
   /*
   *Verifica se l'utente ha vinto o meno
   *@type {[Boolean,Function]}
   */
-  const [vittoriaRound, setVittoriaRound] = useState(false);
+  const [vittoriaRound,setVittoriaRound]= useState(false);
 
   /**
-   * Consente di mescolare casualmente il mazzo iniziale di carte, estrarre le prime 
-   * tre carte ordinandole in modo crescente per il punteggio ed avviare il primo round.
-   * * @function
-   * @returns {void}
+   * Inizializza o resetta una partita mischiando le carte.
    */
-  const inizio = () => {
+  const inizio = ()=>{
     /**
      * questa funzione permette di mescolare il mazzo o di resettaelo
      * @type {Function}
      */
-    const mescola = [...carte].sort(() => 0.5 - Math.random());
+    const mescola=[...carte].sort(() => 0.5 - Math.random());
     /**
      * permette di estrarre 3 carte casualmente e di metterle in ordine crescente grazie
      * all'operatore sort che paragona i primi due punteggi estratti e verifica ik maggiore
@@ -166,7 +157,7 @@ export default function App() {
     setCarteGiocatore(giocatoreIniziale);
     setMazzo(restante);
     setErrore(0);
-
+    
     /**
      * avvia il round facendo partire la partita 
      * @type {Function}
@@ -175,14 +166,10 @@ export default function App() {
   }
 
   /**
-   * Configura i parametri per il turno successivo. Analizza i criteri di fine gioco 
-   * (vittoria, esaurimento del mazzo o raggiungimento del limite di errori) 
-   * ed estrae la carta successiva.
-   * * @function
-   * @param {Carta[]} mazzoCorrente - L'array di carte residue nel mazzo di gioco.
-   * @param {Carta[]} manoCorrente - L'array di carte attualmente in possesso del giocatore.
-   * @param {number} erroriCorrenti - Il numero attuale di errori accumulati.
-   * @returns {void}
+   * Configura il round corrente e controlla le condizioni di fine gioco.
+   * @param {Carta[]} mazzoCorrente - Carte rimaste nel mazzo.
+   * @param {Carta[]} manoCorrente - Carte attualmente in mano al giocatore.
+   * @param {number} erroriCorrenti - Numero di errori commessi fino ad ora.
    */
   const setupRound = (mazzoCorrente, manoCorrente, erroriCorrenti) => {
     if (manoCorrente.length >= 6) {
@@ -195,7 +182,7 @@ export default function App() {
       setStatoGioco('GAME_OVER');
       return;
     }
-    if (!mazzoCorrente || mazzoCorrente.length === 0) {
+    if (mazzoCorrente.length === 0) {
       setMessaggioRound('Mazzo Esaurito! Partita terminata.');
       setStatoGioco('GAME_OVER');
       return;
@@ -208,22 +195,27 @@ export default function App() {
   }
 
   /**
-   * Gestisce l'azione di conferma da parte dell'utente per progredire verso il round successivo.
-   * * @function
-   * @returns {void}
+   * Gestisce il posizionamento della carta da parte dell'utente.
+   * @param {number} index - Posizione scelta nella lista.
+   */
+  const handlePlacement = (index) => {
+    // Logica di posizionamento da implementare
+  }
+
+  /**
+   * Conferma il passaggio al round successivo.
    */
   const handleConfirmNextRound = () => {
-    setupRound(mazzo, carteGiocatore, errore);
-  };
+    // Logica per passare al prossimo round da implementare
+  }
 
-  // Renderizzazione della schermata di benvenuto iniziale
   if (statoGioco === 'inizio') {
     return (
       <SafeAreaView style={styles.containerCenter}>
         <Text style={styles.titolo}>Gioco della Sfortuna 😰</Text>
         <Text style={styles.text}>Edizione: Vita Universitaria</Text>
         <Text style={styles.descrizione}>
-          Metti in ordine cronologico di "disastro" le sfortune che ti capitano. Raggiungi 6 carte senza fare 3 errori per vincere!
+          Metti in ordine cronologico di "disastro" le sfortune che ti capita. Raggiungi 6 carte senza fare 3 errori per vincere!
         </Text>
         <TouchableOpacity style={styles.bottone} onPress={inizio}>
           <Text style={styles.testobottone}>Inizia Partita</Text>
@@ -232,20 +224,20 @@ export default function App() {
     );
   }
 
-  // Interfaccia di gioco dinamica (PLAYING, ROUND_OVER, GAME_OVER)
   return (
     <SafeAreaView style={styles.container}>
+     
       <View style={styles.barra}>
         <Text style={styles.statoText}>🃏 Carte: {carteGiocatore.length}/6</Text>
         <Text style={[styles.statoText, timer <= 10 && { color: '#ff1744' }]}>⏱️ {timer}s</Text>
         <Text style={styles.statoText}>⚠️ Errori: {errore}/3</Text>
       </View>
 
-      <ScrollView contentContainerStyle={styles.scrollArea}>
-        {statoGioco === 'ROUND_OVER' || statoGioco === 'GAME_OVER' ? (
+      <ScrollView contentContainerStyle={styles.scrollArea} >
+      {statoGioco === 'ROUND_OVER' || statoGioco === 'GAME_OVER' ? (
           <View style={styles.container2}>
             <Text style={styles.titolo2}>{messaggioRound}</Text>
-
+            
             {cartaCorrente && (
               <View style={[styles.cardContainer, { borderColor: vittoriaRound ? '#4caf50' : '#f44336', borderWidth: 2 }]}>
                 <Image source={{ uri: cartaCorrente.img }} style={styles.cardImage} />
@@ -265,14 +257,40 @@ export default function App() {
             )}
           </View>
         ) : (
-          <View style={styles.container2}>
+          <View style={styles.ingioco}>
+            <Text style={styles.seleziona}>Sfortuna del Round:</Text>
             {cartaCorrente && (
-              <View style={[styles.cardContainer, { borderColor: '#ccc', borderWidth: 1 }]}>
+              <View style={styles.cardContainer}>
                 <Image source={{ uri: cartaCorrente.img }} style={styles.cardImage} />
                 <Text style={styles.cardTitle}>{cartaCorrente.title}</Text>
-                <Text style={styles.cardScore}>Valuta il livello di sfortuna...</Text>
+                <View style={styles.badge}>
+                  <Text style={styles.badgeText}>Indice: ??.?</Text>
+                </View>
               </View>
             )}
+
+            <Text style={styles.seleziona}>Posizionala nella tua sequenza:</Text>
+
+            <TouchableOpacity style={styles.slot} onPress={() => handlePlacement(0)}>
+              <Text style={styles.slotText}>➕ Inserisci all'inizio</Text>
+            </TouchableOpacity>
+
+            {carteGiocatore.map((card, index) => (
+              <View key={card.id} style={styles.container3}>
+                <View style={styles.carteRiga}>
+                  <Text style={styles.containerCardTitle} numberOfLines={2}>
+                    {card.title}
+                  </Text>
+                  <Text style={styles.containerCardScore}>{card.score}</Text>
+                </View>
+
+                <TouchableOpacity style={styles.slot} onPress={() => handlePlacement(index + 1)}>
+                  <Text style={styles.slotText}>
+                    ➕ Inserisci dopo questa
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            ))}
           </View>
         )}
       </ScrollView>
@@ -281,34 +299,34 @@ export default function App() {
 }
 
 /**
- * Foglio di stile per i componenti grafici dell'applicazione.
+ * Foglio di stile del componente principale.
  * @type {Object}
  */
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#f8f9fa',
   },
   containerCenter: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#f8f9fa',
     padding: 20,
   },
   barra: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    paddingVertical: 15,
-    backgroundColor: '#fff',
-    elevation: 2,
+    paddingVertical: 10,
+    backgroundColor: '#ffffff',
+    borderBottomWidth: 1,
+    borderBottomColor: '#e0e0e0',
   },
   statoText: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#333',
   },
-  titolo: {
+  titolo:{
     fontSize: 32,
     fontWeight: 'bold',
     color: '#212121',
@@ -332,6 +350,10 @@ const styles = StyleSheet.create({
     lineHeight: 22,
     marginHorizontal: 15,
     marginBottom: 40,
+  },
+  ingioco: {
+    width: '100%',
+    alignItems: 'center',
   },
   bottone: {
     backgroundColor: '#ff5722',
@@ -393,6 +415,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   actionButton: {
+    backgroundColor: '#4caf50',
     paddingVertical: 14,
     paddingHorizontal: 35,
     borderRadius: 25,
@@ -403,5 +426,75 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
-  }
+  },
+  seleziona: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#495057',
+    alignSelf: 'flex-start',
+    marginTop: 15,
+    marginBottom: 10,
+  },
+  badge: {
+    backgroundColor: '#e2e3e5',
+    paddingVertical: 6,
+    paddingHorizontal: 16,
+    borderRadius: 20,
+  },
+  badgeText: {
+    color: '#495057',
+    fontWeight: '600',
+    fontSize: 13,
+  },
+  slot: {
+    width: '85%',
+    backgroundColor: '#e8f0fe',
+    borderStyle: 'dashed',
+    borderWidth: 1.5,
+    borderColor: '#1a73e8',
+    borderRadius: 8,
+    paddingVertical: 8,
+    marginVertical: 6,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  slotText: {
+    color: '#1a73e8',
+    fontSize: 13,
+    fontWeight: '600',
+  },
+  container3: {
+    width: '100%',
+    alignItems: 'center',
+  },
+  carteRiga: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: '#ffffff',
+    borderColor: '#ced4da',
+    borderWidth: 1,
+    borderRadius: 10,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    marginVertical: 2,
+    elevation: 1,
+  },
+  containerCardTitle: {
+    fontSize: 14,
+    color: '#343a40',
+    flex: 1,
+    marginRight: 10,
+  },
+  containerCardScore: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#212529',
+    backgroundColor: '#f1f3f5',
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    borderRadius: 6,
+    overflow: 'hidden',
+  },
 });
